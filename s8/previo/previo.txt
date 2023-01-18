@@ -1,0 +1,23 @@
+1. Crea una pipe con nombre mediante el comando mknod. A continuación lanza un proceso que ejecute el programa ‘cat’ redireccionando su salida estándar hacia la pipe que acabas de crear. En una shell diferente lanza otro proceso que ejecute también el programa ‘cat’, pero ahora redireccionando su entrada estándar hacia la pipe que acabas de crear. Introduce datos por teclado, en la primera Shell, y pulsa ^D para indicar el fin. Anota en el fichero “previo.txt” los comandos que has ejecutado.
+    mknod pipe p
+    cat > pipe
+    cat < pipe
+
+2. ¿Es posible comunicar los dos comandos ‘cat’ desde dos terminales diferentes a través de una pipe sin nombre (por ejemplo, utilizando un pipeline de la shell visto en la sesión anterior)? 
+    No, porque las pipes sin nombre solo sirven para comunicar procesos que estan
+    relacionados jerarquicamente (padre e hijo, hermanos).
+¿y desde el mismo terminal? Razona la respuesta en el fichero “previo.txt”.
+    Sí, porque es con el "mismo" proceso, o procesos hijos o hermanos, que estan relacionados.
+
+3. Escribe en el fichero “previo.txt” el fragmento de código que deberíamos añadir a un programa cualquiera para redireccionar su entrada estándar al extremo de escritura de una pipe sin nombre utilizando las llamadas al sistema close y dup. Imagina que el descriptor de fichero asociado al extremo de escritura de la pipe es el 4.
+    dup2(4, 0);
+    close(4);
+
+4. Analiza en detalle el código de la función createSocket y serverConnection, y busca en el man el significado de las llamadas a sistema socket, bind, listen y accept.
+createSocket:
+    Se crea un socket address y se le asigna el string socketId. Se guarda en socket_fd el descriptor con dominio AF_UNIX, tipo SOCK_STREAM y protocolo 0. Si el descriptor es < 0, error.
+    Luego, se enlaza con bind el socket a la dirección socketAddr. Si su retorno es 0, se ha hecho con éxito, si es -1, error.
+    Finalmente, pone el socket en modo listen, para esperar a recibir conecciones. Si su retorno es 0, se ha hecho con éxito, si es -1, error.
+serverConnection:
+    Recibe como parámetro el descriptor que referencia un socket.
+    Se ejecuta accept que comprueba si el socket existe, si esta enlazado y si esta en modo listen, y entonces, lo acepta. Si se ha realizado con éxito, se retorna el descriptor, si no, un -1.

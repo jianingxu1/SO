@@ -1,0 +1,19 @@
+Alarm 1:
+1. After 10 seconds it terminates because of the SIGALRM.
+2. The behaviour is the same, it terminates de process, but the message is different. A killed message is displayed instead of alarm.
+3. The init process. With the waitpid system call.
+4. It is not necessary because it is never executed.
+
+Alarm 2:
+1. That the alarm2 process executes the SIGALRM treatment every time I send him a SIGALRM with kill via the shell. The time control has not behaved as the code pretended, it can be accelerated when manually sending SIGALRM's without the need of waiting the alarm set by the process.
+2. All of them except SIGKILL and SIGSTOP.
+3. Instead of "alarm(10)", write "if (alarm(10)>0) error_y_exit("alarm", 1). If the return value of alarm() > 0, that means that there was an alarm remaining, so the SIGALRM received was not related to any timer. If it's 0, then it was related to a timer.
+
+Alarm 3:
+1. They both receive the SIGALRM. Everytime they receive the SIGALRM, in their treatment, they print their pid so I've seen that both the parent's pid and the children's pid printed.
+
+Alarm 4:
+1. After the fork, the child is the only one who programs an alarm, so only the child receives the SIGALRM and the parent is kept waiting in the sigsuspend. I've checked the pid.
+
+Ejemplo waitpid:
+Done.

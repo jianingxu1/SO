@@ -1,0 +1,110 @@
+ejemplo_fork1:
+Soy el proceso 32106
+Soy el proceso 32107
+
+    El proceso padre muestra la primera línea y su hijo, la segunda. Porque
+    cuando un proceso padre, crea un nuevo proceso hijo con fork(), el hijo tiene
+    PID diferente del padre, y hereda el código del padre, ejecutando justo donde
+    va a ejecutar también el padre. Por eso muestran PID's diferentes.
+
+ejemplo_fork2:
+Antes del fork: Soy el proceso 32179
+PADRE: Soy el proceso 32179
+Los DOS: Soy el proceso 32179
+HIJO: Soy el proceso 32180
+Los DOS: Soy el proceso 32180
+
+    El proceso padre muestra las líneas donde aparece su PID 32179, y el hijo
+    los de su PID 32180.
+    Antes del fork, solo se ejecuta el proceso padre y imprime la primera línea.
+    Entonces, se produce un fork y se guarda en pid su retorno. Por sus propiedades,
+    la variable pid del proceso padre será la del nuevo proceso hijo, y la variable
+    pid del hijo sera igual a 0. Como continúan su ejecución en la misma línea justo
+    después del fork, en las condiciones, el padre entra por el case default pero el
+    hijo entra por el case 0, por eso hacen cosas diferentes. Finalmente, los dos
+    ejecutan las línes que no estan dentro de las condiciones.
+    
+ejemplo_fork3:
+Antes del fork: Soy el proceso 32363
+PADRE: Soy el proceso 32363
+Solo lo ejecuta el padre: Soy el proceso 32363
+HIJO: Soy el proceso 32364
+
+    El proceso padre imprime las primeras tres líneas. El hijo, la última línea.
+    Es un caso parecido al anterior, solo que cuando el hijo entra en la condición
+    del case 0, se ejecuta la instrucción exit(), por lo que el hijo se termina. Por
+    eso, el hijo NO ejecuta las últimas instrucciones y el padre sí.
+
+ejemplo_fork4:
+
+    Aparecen primero las líneas que imprime el proceso padre, luego las del hijo.
+    Acaba antes la ejecución el padre.
+
+ejemplo_fork5:
+Antes del fork: Soy el proceso 32625
+PADRE: Soy el proceso 32625
+HIJO: Soy el proceso 32626
+HIJO:La variable_global vale A y la local a
+PADRE:La variable_global vale A y la local a
+Solo lo ejecuta el padre: Soy el proceso 32625
+
+    El padre imprime las primeras 2 y últimas 2 líneas, el hijo el restante.
+    Este caso es parecido al anterior pero ahora, dentro de las condiciones del switch,
+    el proceso padre tiene un waitpid antes de imprimir la línea sobre la variable_global,
+    por eso, el hijo imprime primero su contenido de dentro de la condición y hace un exit,
+    en este momento, se reanuda la ejecución del padre (ya que estaba en un waitpid).
+
+ejemplo_fork6:
+
+    El proceso padre y hijo ejecutan concurrentemente 100000 veces la variable global, e
+    lo incrementan en 1 cada 10000 iteraciones.
+    No lo podemos asegurar, ya que estos dos procesos se ejecutan "concurrentemente", a
+    veces uno ejecuta instrucciones antes que el otro dependiendo de cual de ellos esté
+    en la CPU en ese momento.
+
+ejemplo_fork7:
+    Porque se intenta acceder a una variable no declarada en su scope, exactamente la
+    variable_local no está definida en la función Escribe_variables().
+    No tiene que ver con el hecho de crear procesos.
+    Pasándole como parámetro a la función, la variable_local.
+    
+ejemplo_exec1:
+Soy el proceso: 31842
+total 752
+-rw-r--r--@ 1 jianingxu  staff    791 Feb  8  2021 Makefile.ejemplos
+-rw-r--r--@ 1 jianingxu  staff    615 Feb  8  2021 README_S3
+-rwxr-xr-x  1 jianingxu  staff  33738 Oct  1 17:58 ejemplo_exec1
+-rw-r--r--@ 1 jianingxu  staff    327 Feb  8  2021 ejemplo_exec1.c
+-rwxr-xr-x  1 jianingxu  staff  33802 Oct  1 17:58 ejemplo_exec2
+-rw-r--r--@ 1 jianingxu  staff    332 Feb  8  2021 ejemplo_exec2.c
+-rwxr-xr-x  1 jianingxu  staff  33738 Oct  1 17:58 ejemplo_fork1
+-rw-r--r--@ 1 jianingxu  staff    315 Feb  8  2021 ejemplo_fork1.c
+-rwxr-xr-x  1 jianingxu  staff  33802 Oct  1 17:58 ejemplo_fork2
+-rw-r--r--@ 1 jianingxu  staff   1065 Feb  8  2021 ejemplo_fork2.c
+-rwxr-xr-x  1 jianingxu  staff  33786 Oct  1 17:58 ejemplo_fork3
+-rw-r--r--@ 1 jianingxu  staff   1147 Feb  8  2021 ejemplo_fork3.c
+-rwxr-xr-x  1 jianingxu  staff  33786 Oct  1 17:58 ejemplo_fork4
+-rw-r--r--@ 1 jianingxu  staff   1362 Feb  8  2021 ejemplo_fork4.c
+-rwxr-xr-x  1 jianingxu  staff  50394 Oct  1 17:58 ejemplo_fork5
+-rw-r--r--@ 1 jianingxu  staff   1670 Feb  8  2021 ejemplo_fork5.c
+-rwxr-xr-x  1 jianingxu  staff  50474 Oct  1 17:58 ejemplo_fork6
+-rw-r--r--@ 1 jianingxu  staff   2051 Feb  8  2021 ejemplo_fork6.c
+-rw-r--r--@ 1 jianingxu  staff   1550 Feb  8  2021 ejemplo_fork7.c
+-rwxr-xr-x@ 1 jianingxu  staff   8581 Feb  8  2021 listaParametros
+-rw-r--r--  1 jianingxu  staff      0 Oct  1 17:54 previo.txt
+
+    Vemos el ID del proceso y la ejecucion del comando ls -l.
+    Solo 1 vez porque cuando cambiamos el ejecutable de un Kproceso, su código
+    cambia por completo. Por eso, si se realiza con exito el execlp, las 
+    instrucciones que quedan por ejecutarse NO se ejecutan.
+
+ejemplo_exec2:
+Soy el proceso: 32031
+Soy el proceso 32031
+Soy el proceso 32032
+
+    Un proceso al que llamaremos A empieza a ejecutar ejemplo_exec2, y imprimer
+    su PID, luego, cambia su ejecutable a ejemplo_fork1, hace un fork(), por lo
+    tanto, se crea un nuevo proceso, que es hijo de A, y los dos ejecutan el 
+    codigo de imprimir su PID, ya que el hijo hereda el codigo del padre.
+    Se ejecutan 2 procesos.

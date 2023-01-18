@@ -1,0 +1,115 @@
+nm mem1_previo:
+The addresses are the numbers located in the left.
+                 U abort@@GLIBC_2.17
+                 U atoi@@GLIBC_2.17
+0000000000011060 B __bss_end__
+0000000000011060 B _bss_end__
+0000000000011058 B __bss_start
+0000000000011058 B __bss_start__
+00000000000007c8 t call_weak_fn
+0000000000011058 b completed.8216
+                 w __cxa_finalize@@GLIBC_2.17
+0000000000011048 D __data_start
+0000000000011048 W data_start
+00000000000007e0 t deregister_tm_clones
+0000000000000848 t __do_global_dtors_aux
+0000000000010db8 t __do_global_dtors_aux_fini_array_entry
+0000000000011050 D __dso_handle
+0000000000010dc0 a _DYNAMIC
+0000000000011058 D _edata
+0000000000011060 B __end__
+0000000000011060 B _end
+                 U exit@@GLIBC_2.17
+0000000000000a5c T _fini
+0000000000000890 t frame_dummy
+0000000000010db0 t __frame_dummy_init_array_entry
+0000000000000bf0 r __FRAME_END__
+0000000000010fa0 a _GLOBAL_OFFSET_TABLE_
+                 w __gmon_start__
+0000000000000aa8 r __GNU_EH_FRAME_HDR
+00000000000006c8 t _init
+0000000000010db8 t __init_array_end
+0000000000010db0 t __init_array_start
+0000000000000a70 R _IO_stdin_used
+                 w _ITM_deregisterTMCloneTable
+                 w _ITM_registerTMCloneTable
+000000000001105c B j
+0000000000000a58 T __libc_csu_fini
+00000000000009d8 T __libc_csu_init
+                 U __libc_start_main@@GLIBC_2.17
+00000000000008c4 T main
+0000000000000810 t register_tm_clones
+                 U sprintf@@GLIBC_2.17
+0000000000000790 T _start
+                 U strlen@@GLIBC_2.17
+0000000000000894 T suma
+0000000000011058 D __TMC_END__
+                 U write@@GLIBC_2.17
+
+The symbols shown are:
+- U (undefined)
+- A / a (absolute)
+- T / t (text section symbol)
+- D (data section symbol)
+- B / b (bss section symbol)
+- R / r (read only data section symbol)
+- W / w -> (weak symbol not specifically tagged as a weak object symbol)
+
+We can know the address of the j variable because it is a global variable. However, we cannot know the address of the i variable because it is a local variable, so its address will be assigned during execution time.
+
+j is located in bss and i will be located in dynamic memory.
+
+0000000000000894 T suma, which is located in text section (code section).
+
+Used the command:
+gcc -o mem1_previo mem1_previo.c -static
+
+mem2_previo:
+    10:
+    00400000-00473000 r-xp 00000000 fe:02 11012                              /home/debian/Downloads/S5/mem2_previo
+    00482000-00485000 rw-p 00072000 fe:02 11012                              /home/debian/Downloads/S5/mem2_previo
+    00485000-004af000 rw-p 00000000 00:00 0 
+    2d764000-2d786000 rw-p 00000000 00:00 0                                  [heap]
+    ffff940b3000-ffff940b4000 r--p 00000000 00:00 0                          [vvar]
+    ffff940b4000-ffff940b5000 r-xp 00000000 00:00 0                          [vdso]
+    fffff7321000-fffff7342000 rw-p 00000000 00:00 0
+
+    Heap size: 2d786000-2d764000 = 00022000 
+
+    40:
+    00400000-00473000 r-xp 00000000 fe:02 11012                              /home/debian/Downloads/S5/mem2_previo
+    00482000-00485000 rw-p 00072000 fe:02 11012                              /home/debian/Downloads/S5/mem2_previo
+    00485000-004af000 rw-p 00000000 00:00 0 
+    36a87000-36aa9000 rw-p 00000000 00:00 0                                  [heap]
+    ffff9ef9d000-ffff9ef9e000 r--p 00000000 00:00 0                          [vvar]
+    ffff9ef9e000-ffff9ef9f000 r-xp 00000000 00:00 0                          [vdso]
+    ffffdbed5000-ffffdbef6000 rw-p 00000000 00:00 0 
+
+    Heap size: 36aa9000-36a87000 = 00022000
+
+mem2_previo_v2:
+    10:
+    00400000-00473000 r-xp 00000000 fe:02 1575                               /home/debian/Downloads/S5/mem2_previo_v2
+    00482000-00485000 rw-p 00072000 fe:02 1575                               /home/debian/Downloads/S5/mem2_previo_v2
+    00485000-00487000 rw-p 00000000 00:00 0 
+    17815000-17838000 rw-p 00000000 00:00 0                                  [heap]
+    ffffbe803000-ffffbe804000 r--p 00000000 00:00 0                          [vvar]
+    ffffbe804000-ffffbe805000 r-xp 00000000 00:00 0                          [vdso]
+    ffffc1b46000-ffffc1b67000 rw-p 00000000 00:00 0
+
+    Heap size: 17838000-17815000 = 00023000
+
+    40:
+    00400000-00473000 r-xp 00000000 fe:02 1575                               /home/debian/Downloads/S5/mem2_previo_v2
+    00482000-00485000 rw-p 00072000 fe:02 1575                               /home/debian/Downloads/S5/mem2_previo_v2
+    00485000-00487000 rw-p 00000000 00:00 0 
+    2eee8000-2ef0b000 rw-p 00000000 00:00 0                                  [heap]
+    ffff98a57000-ffff98a58000 r--p 00000000 00:00 0                          [vvar]
+    ffff98a58000-ffff98a59000 r-xp 00000000 00:00 0                          [vdso]
+    ffffce86f000-ffffce890000 rw-p 00000000 00:00 0
+
+    Heap size: 2ef0b000-2eee8000 = 001e4000
+
+In the first program (version 1), as there is no dynamic memory assignation, the
+heap size is always the same. However, in version 2 of the program, as there IS
+dynamic memory assignation, the heap size increases accordingly.

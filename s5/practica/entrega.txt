@@ -1,0 +1,154 @@
+PREGUNTA 35.¿Qué variables aparecen en la salida del nm de mem1_dynamic? ¿Qué
+dirección ocupa cada una? Indica a que región pertenece cada variable según la salida del nm
+y el tipo de variable (local o global).
+
+00000000006010a0 B globalArray --> es troba en la secio del data, tipo global
+
+---------------------------
+
+PREGUNTA 36.Para los dos ejecutables, compilado estático y dinámico, observa su tamaño, la
+salida de los comandos nm y objdump ¿En qué se diferencian los dos ejecutables?
+a) con static, el numero de variables que aparecen es mucho mayor que cuando lo compilamos dinamicamente ya que almacena las librerias.
+
+b) hay mas codigo assembler en el programa compilado estaticamente.
+
+c) el tamaño del compilado estaticamente es 4.7 MB mientras que el que esta compilado dinamicamente es de 11 Kb.
+
+---------------------------
+
+PREGUNTA 37.Observa el contenido del fichero maps del /proc para cada proceso y apunta
+para cada región la dirección inicial, dirección final y etiqueta asociada. ¿Qué diferencia hay
+entre el maps de cada proceso?
+
+
+dinamic :
+
+00601000-00602000 rw-p 00001000 00:38 19434020                           /dades/momin.miah/Documents/SO/S5/mem1_dynamic
+00602000-00603000 rw-p 00000000 00:00 0
+01640000-01661000 rw-p 00000000 00:00 0                                  [heap]
+7f258990d000-7f2589af3000 r-xp 00000000 103:07 308705                    /lib64/libc-2.31.so
+7f2589af3000-7f2589cf3000 ---p 001e6000 103:07 308705                    /lib64/libc-2.31.so
+7f2589cf3000-7f2589cf6000 r--p 001e6000 103:07 308705                    /lib64/libc-2.31.so
+7f2589cf6000-7f2589cfe000 rw-p 001e9000 103:07 308705                    /lib64/libc-2.31.so
+7f2589cfe000-7f2589d02000 rw-p 00000000 00:00 0
+7f2589d02000-7f2589d2c000 r-xp 00000000 103:07 273230                    /lib64/ld-2.31.so
+7f2589ed7000-7f2589eda000 rw-p 00000000 00:00 0
+7f2589f2a000-7f2589f2c000 rw-p 00000000 00:00 0
+7f2589f2c000-7f2589f2d000 r--p 0002a000 103:07 273230                    /lib64/ld-2.31.so
+7f2589f2d000-7f2589f2f000 rw-p 0002b000 103:07 273230                    /lib64/ld-2.31.so
+7ffead2b4000-7ffead2d6000 rw-p 00000000 00:00 0                          [stack]
+
+
+
+static:
+00400000-004b0000 r-xp 00000000 00:38 19433686                           /dades/momin.miah/Documents/SO/S5/mem1_static
+006b0000-006b3000 r--p 000b0000 00:38 19433686                           /dades/momin.miah/Documents/SO/S5/mem1_static
+006b3000-006b7000 rw-p 000b3000 00:38 19433686                           /dades/momin.miah/Documents/SO/S5/mem1_static
+006b7000-006b9000 rw-p 00000000 00:00 0
+0157c000-0159f000 rw-p 00000000 00:00 0                                  [heap]
+7ffddc760000-7ffddc782000 rw-p 00000000 00:00 0                          [stack]
+
+El tamaño del stack es significativamente mas grande que en dinamic porque guarda las librerias en el stack. Y en dinamic, el heap es más grande que el de static porque almacena dinámicamente secciones de las librerias en el heap.
+
+---------------------------
+
+PREGUNTA 38.¿A qué región de las descritas en el maps pertenece cada variable y cada zona
+reservada con malloc? Apunta la dirección inicial, dirección final y el nombre de la región.
+
+Las variable locales estan en la region del stack.
+El malloc va augmentando el heap para ir guardando las variables locales.
+
+dinamic:
+inicial = 0x16402a0
+final = 0x16422c0
+
+static:
+inicial = 0x157dad0
+final = 0x157faf0
+
+---------------------------
+
+PREGUNTA 39.Para cada ejecución apunta el número de mallocs hechos y la dirección inicial y
+final del heap que muestra el fichero maps del /proc. ¿Cambia el tamaño según el parámetro
+de entrada? ¿Por qué?
+
+parámetro 3:
+    nmallocs = 3
+    inicial = 0x020dc000
+    final = 0x020fd000
+    tamaño = 0x21000
+parámetro 5:
+    nmallocs = 5
+    inicial = 0x02080000
+    final = 0x020a1000
+    tamaño = 0x21000
+parámetro 100:
+    nmallocs = 100
+    inicial = 0x010c9000
+    final = 0x0114d000
+    tamaño = 0x84000
+
+Cuando se llama malloc por primera vez, este augmenta el tamaño del heap por un
+valor predeterminado (normalmente más del que se pide). Vemos que sí que cambia
+según el parámetro de entrada. Primero, en las llamadas con 3 o 5, el espacio
+que se augmenta en el heap con el malloc inicial es más grande del que se pide, por
+eso, en las próximas iteraciones, cuando se hacen más mallocs, si aún hay espacio
+en el heap, entonces estos NO augmentaran el tamaño del heap. Sin embargo, con
+parámetro 100, se hacen más iteraciones, por lo tanto, más mallocs hasta el punto
+de que sobrepasa el tamaño del heap del malloc inicial, por lo tanto, se augmenta
+el tamaño del heap.
+
+---------------------------
+
+PREGUNTA 40.¿Cuál es el tamaño del heap en este caso? Explica los resultados.
+
+Si añadimos un free al final de cada iteración, liberamos el espacio de heap
+reservado anteriormente y puede volver a usarse. Por lo tanto, en la siguiente
+iteración, al hacer malloc, reservamos el mismo espacio de heap, y después se
+libera, así constantemente. Al final, el tamaño del heap no cambia. 
+
+parámetro 100 (con el free):
+    nmallocs = 100
+    inicial = 0x01d64000
+    final = 0x01d85000
+    tamaño = 0x21000 (nos fijamos que el tamaño del heap no augmenta)
+
+---------------------------
+
+PREGUNTA 41.Para cada ejecución apunta el número de sbrks hechos y la dirección
+inicial y final del heap que se muestra en el maps del /proc. ¿Cambia el tamaño
+del heap respecto al observado en la pregunta 6? ¿Por qué?
+
+parámetro 3:
+    n_sbrks: 3
+    inicial: aaaae71b0000
+    final: aaaae71b3000
+    tamaño: 000000003000
+
+parámetro 5:
+    n_sbrks: 5
+    inicial: aaab258f4000
+    final: aaab258f9000
+    tamaño: 000000005000
+
+parámetro 100:
+    n_sbrks: 100
+    inicial: aaaabaee5000
+    final:   aaaabaf49000
+    tamaño: 000000064000
+
+Sí que cambia. Con sbrk(n) con n entero, siempre se augmenta el tamaño del heap
+en los n bytes indicados en el parámetro.
+
+---------------------------
+
+PREGUNTA 42.¿Qué error contiene el código del programa? ¿Por qué el programa no
+falla en las primeras iteraciones? Propón una alternativa a este código que evite
+que se genere la excepción, detectando, antes de que pase, que vamos a hacer un
+acceso fuera del espacio de direcciones.
+
+Que intenta acceder a un puntero fuera del heap.
+No falla en las primeras iteraciones porque el puntero se encuentra dentro del
+tamaño del heap.
+La alternativa sería que cuando se detecte el SIGSEGV, que se trate haciendo un
+malloc a p otra vez.

@@ -1,0 +1,15 @@
+1. Lo podemos ver en el /proc/[pid]/stat. En los campos cminflt (minor page fault) y cmajflt (major page fault).
+
+2. vmstat 1
+Swap-in en si, swap-out en so.
+
+4. Usaremos el comando: chmod +x [archivo]
+
+6. Ejecutaremos los siguientes comandos:
+./fib 10 -> 0:00.00elapsed
+./fib 20 -> 0:00.00elapsed
+./fib 30 -> 0:00.04elapsed
+./fib 40 -> 0:03.36elapsed
+./fib 50 -> 7:01.25elapsed
+
+7. Tiene prioridad 14.

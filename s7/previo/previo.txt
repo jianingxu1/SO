@@ -1,0 +1,24 @@
+1. Devuelve un 0.
+2. ./es1 <input.txt
+El resultado es:
+
+-rw-r--r-- 1 debian debian 1170 Feb  8  2021 es1.c
+-rw-r--r-- 1 debian debian 1700 Feb  8  2021 es2.c
+-rw-r--r-- 1 debian debian  943 Feb  8  2021 es3.c
+-rw-r--r-- 1 debian debian 1206 Feb  8  2021 es4.c
+-rw-r--r-- 1 debian debian   31 Feb  8  2021 es5.c
+-rw-r--r-- 1 debian debian  112 Feb  8  2021 es6.c
+-rw-r--r-- 1 debian debian  107 Feb  8  2021 es7.c
+-rw-r--r-- 1 debian debian  644 Feb  8  2021 es8.c
+
+El comando "grep es" imprime las líneas que contienen el patrón "es" de la salida del ls -l.
+
+3. El comando es: ps -eo pid,user,command | grep bash
+
+5. Con la represantación interna, se escriben 4 bytes ya que lo representa como un entero, y convirtiendolo a string, 5 bytes, 1 byte para cada carácter.
+En el primer caso, se escriben los 4 bytes pasados a ASCII, en cambio en la string, se imprime cada carácter formando el número en cuestión.
+
+6.
+a) La función read_driver_1 para el driver 1 y read_driver_2 para el driver 2.
+b) El major indica el tipo de driver y el minor es un identificador para drivers con el mismo major. Se utilizan para identificar a los drivers.
+El driver 1: major 249, minor 0, y el driver 2: major 250, minor 0.

@@ -1,0 +1,103 @@
+1. ¿Cómo podéis saber los sistemas de ficheros montados en vuestro sistema y de
+qué tipo son? Indica, además, en qué directorios están montados.
+  Utilizando el comando df -T.
+  Los directorios estan indicados en la columna "Mounted on".
+  Filesystem     Type  1K-blocks     Used Available Use% Mounted on
+  tmpfs          tmpfs   1629804     2272   1627532   1% /run
+  /dev/sda6      ext4   39487800 16920484  20529200  46% /
+  tmpfs          tmpfs   8149004        0   8149004   0% /dev/shm
+  tmpfs          tmpfs      5120        4      5116   1% /run/lock
+  /dev/sda5      vfat     523244     5384    517860   2% /boot/efi
+  tmpfs          tmpfs   1629800     4716   1625084   1% /run/user/1000
+    
+¿Cómo se puede saber el número de inodos libres de un sistema de ficheros?
+¿Qué comando has utilizado y con qué opciones?
+  Usando el comando "df -i" podem ver en la columna "IFree" los inodos libres para
+  cada fichero.
+
+¿Cómo se puede saber el espacio libre de un sistema de ficheros? ¿Qué
+comando has utilizado y con qué opciones?
+  Usando el comando "df -h podemos ver en la columna "Available" el espacio
+  libre para cada fichero.
+
+2. ¿De qué tipo es cada uno de links creados, sl_pr y hl_pr? Ejecuta el comando
+stat sobre pr.txt, sobre sl_pr y sobre hl_pr. Busca en la salida de stat la
+información sobre el inodo, el tipo de fichero y el número de links y anótala en
+el fichero previo.txt. ¿Cuál es el número de links que tiene cada fichero? ¿Qué
+significa ese valor? ¿Qué inodo tiene cada fichero? ¿Alguno de los links, sl_pr o
+hl_pr, tiene el mismo inodo que pr.txt? ¿Si es así, qué significa eso?
+  pr.txt es de tipo fichero, tiene 2 links i el inodo es el 1576670.
+  sl_pr es de tipo symbolic link, tiene 1 link i el inodo es 1576671.
+  hl_pr es de tipo fichero, tiene 2 links i el inod es el 1576670.
+  Si, hl_pr tiene el mismo inodo que pr.txt, eso significa que apuntan al mismo
+  inodo, así que si borramos uno de ellos, el inodo no se borra porque aún existiria
+  un link a él.
+
+¿Observas alguna diferencia en el resultado de alguno de los comandos
+cuando se ejecutan sobre sl_pr y cuando se ejecutan sobre hl_pr? Si hay
+alguna diferencia, explica el motivo.
+  Sí que hay diferencia en todos excepto cat. Eso es debido a que sl_pr es un soft-link
+  y al ejecutar namei nos muestra el path del fichero o inodo que apunta, y en readlink,
+  el nombre del fichero que apunta. En cambio, hl_pr es un hard-link, apunta directamente
+
+Elimina ahora el fichero pr.txt y vuelve a ejecutar los comandos stat, cat, namei
+y readlink tanto sobre sl_pr como hl_pr.
+Apunta los resultados en el fichero previo.txt
+  stat sl_pr
+    File: sl_pr -> pr.txt
+    Size: 6         	Blocks: 0          IO Block: 4096   symbolic link
+  Device: 806h/2054d	Inode: 1576671     Links: 1
+  Access: (0777/lrwxrwxrwx)  Uid: ( 1000/darkroth)   Gid: ( 1000/darkroth)
+  Access: 2022-12-17 00:38:37.304341499 +0100
+  Modify: 2022-12-17 00:38:35.540338896 +0100
+  Change: 2022-12-17 00:38:35.540338896 +0100
+   Birth: 2022-12-17 00:38:35.540338896 +0100
+
+  cat sl_pr 
+  cat: sl_pr: No such file or directory
+  
+  namei sl_pr
+  f: sl_pr
+   l sl_pr -> pr.txt
+       pr.txt - No such file or directory
+
+  readlink sl_pr 
+  pr.txt
+
+  stat hl_pr
+    File: hl_pr
+    Size: 19        	Blocks: 8          IO Block: 4096   regular file
+  Device: 806h/2054d	Inode: 1576670     Links: 1
+  Access: (0664/-rw-rw-r--)  Uid: ( 1000/darkroth)   Gid: ( 1000/darkroth)
+  Access: 2022-12-17 00:39:45.196413551 +0100
+  Modify: 2022-12-17 00:38:00.144278438 +0100
+  Change: 2022-12-17 01:02:34.383803274 +0100
+   Birth: 2022-12-17 00:38:00.144278438 +0100
+
+  cat hl_pr 
+  esto es una prueba
+
+  namei hl_pr 
+  f: hl_pr
+   - hl_pr
+
+  readlink hl_pr
+
+¿Observas alguna diferencia en el resultado de alguno de los comandos
+cuando se ejecutan sobre sl_pr y cuando se ejecutan sobre hl_pr? Si hay
+alguna diferencia, explica el motivo.
+  En sl_pr, los comandos cat y namei nos indican que el fichero al que apunta
+  no existe, y en readlink, nos sigue escribiendo el nombre del fichero al que apunta.
+  En hl_pr todo sigue igual.
+  Es es debido a que hl_pr al ser un hard-link, apunta al inodo que aún existe, sin embargo sl_pr,
+  apuntaba al nombre pr.txt y des de éste accedia al inodo, pero como hemos borrado pr.txt,
+  no lo encuentra.
+¿Observas alguna diferencia respecto a la ejecución de estos comandos
+antes y después de borrar el fichero pr.txt? Si hay alguna diferencia,
+explica el motivo.
+  al inodo (de fichero).
+  Sí, al hacer stat hl_pr, el número de links ha bajado a 1 al eliminar pr.txt, cuando
+  antes era 2.
+  sl_pr ya no puede acceder al inodo apuntado por pr.txt.
+
+  

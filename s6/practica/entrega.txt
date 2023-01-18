@@ -1,0 +1,18 @@
+PREGUNTA 43. Apunta en el fichero entrega.txt el número de unidades de cálculo (hardware
+threads, cores y CPUS) que tienes en la máquina.
+
+Hay un unico CPU con 4 cores cada uno con 2 PU (processing units).
+
+PREGUNTA 44. Apunta el tiempo medio, máximo y mínimo para una instancia en la hoja de
+cálculo “impacto concurrencia” del fichero s6.ods adjunto.
+ hecho
+
+ PREGUNTA 45. Calcula el tiempo medio, máximo y mínimo de los fibonacci ejecutados en cada
+experimento. Anota los resultados en la hoja de cálculo “impacto concurrencia” del fichero
+s6.ods.
+hecho
+
+
+PREGUNTA 46.Apunta el tiempo medio para una instancia en la hoja de cálculo “impacto
+afinidad” del fichero s6.ods adjunto. Copia también en esta hoja el tiempo que has obtenido
+para una sola instancia en el apartado anterior

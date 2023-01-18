@@ -1,0 +1,16 @@
+PREGUNTA 67.¿Qué contiene el fichero al final de la ejecución?¿Contiene la salida del padre y del hijo, o sólo la del padre? ¿Cómo se explica ese contenido?
+    El fichero contiene:
+        Inicio
+        Fin
+    Contiene la salida de ambos, hijo y padre. Ambos escriben a terminal. El padre
+    primero escribe a la pipe que esta conectada a su hijo con "Inicio" y el hijo escribe "Inicio" a la terminal. Finalmente, el padre escribe "Fin" a la terminal.
+
+PREGUNTA 68.¿Acaba el programa padre? ¿y el hijo? ¿Por qué?
+    No acaba ninguno. Porque el padre espera a que el hijo acabe, pero el hijo,
+    se queda bloqueado en el read esperando que alguien escriba en la pipe ya que
+    aun hay escritores de la pipe (el padre no ha cerrado su extremo de escritura
+    a la pipe). Los dos quedan bloqueados.
+
+PREGUNTA 69.Si quisiéramos que el lector también pudiera enviar un mensaje al escritor
+¿podríamos utilizar la misma pipe con nombre o deberíamos crear otra? Razona la respuesta.
+    Podríamos únicamente si sincronizamos bien cuando leen y escriben cada uno. Si no se sincroniza, como el lector lee de la pipe, leería lo que él mismo esta escribiendo. Para asegurarnos que funcione bien, lo mejor es crear otra pipe con nombre.

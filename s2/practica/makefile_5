@@ -1,0 +1,7 @@
+all: suma
+suma: suma.c my_functions.o
+	gcc -o suma suma.c my_functions.o
+my_functions.o: my_functions.c
+	gcc -c my_functions.c
+clean:
+	rm suma *.o

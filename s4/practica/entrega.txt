@@ -1,0 +1,14 @@
+29. The parent does the default SIGALRM treatment, it terminates.
+
+30. The signal treatment table is change to the default one. The reprogramming of signals does NOT hold, the DEFAULT is placed.
+
+31. It is concurrent, the parent does not wait to create the next child.
+
+32. It can't because a process can only send signals to processes created by the same user and group.
+bash: kill: (7453) - Operation not permitted
+
+33. The process is killed because the default behaviour of the signal is to terminate the process.
+In my case, as I use a SIGALRM to count each second: [1]    49325 alarm      ./eventos2
+
+34. With 1 as a parameter, the SIGUSR1 signal that the parent process sends to the child process is received after the child has captured the signal.
+With 0, the child process receives de SIGUSR1 signal before capturing it.

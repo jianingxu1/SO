@@ -1,0 +1,75 @@
+
+PREGUNTA 55.Apunta en el fichero “entrega.txt” los comandos que has utilizado en cada
+apartado. Además entrega el fichero “es1_v2.c” ¿Qué diferencias observas en las dos
+ejecuciones de strace? ¿Cuántas llamadas a sistema read ejecuta cada versión? ¿Qué
+influencia puede tener sobre el rendimiento de ambas versiones de código? ¿Por qué?
+
+1.Observa ahora que el fichero que representa al terminal es diferente.
+    En una terminal, el fichero que lo representa es el pts/0, y en el otro es el pts/1.
+
+2. ./es1 > /dev/pts/2 --> la salida estandar de es1 se redirige al fichero que representa la terminal 2
+
+3. ./es1  | ./es1
+
+5. La version 1, 1703 llamas a sistema para read y write. Mientras que la version 2 solamte 10. Esto repercute de manera significate el rendimiento
+    ya que las llamadas a sistema son muy costosas.
+
+
+PREGUNTA 56.Explica las diferencias observadas en la salida del programa cuando el primer
+parámetro vale 0 o 1. ¿Para qué crees que sirve este parámetro?
+
+    Si el primer parametro es 0 los numero random salen los numero como conjunto de caracteres. Sin embargo si el paramentro es 1, salen los bytes que representan el entero en maquina.
+
+
+PREGUNTA 57.Explica el motivo de los resultados observados dependiendo del formato
+fichero de entrada
+
+    Cuando al programa le llega bytes que representan el entero en maquina, solamente se escribe una vez. Si le llega un conjunto de caracteres con los numeros, los pone dos veces.
+
+PREGUNTA 58.Explica las diferencias observadas entre la salida del programa es3 y es4. ¿Por
+qué la salida es inteligible para uno de los ficheros de entrada y no para el otro?
+
+    Cuando la entrada son los bytes que representan a un numero entero en maquina, salen estos bytes que los represetan. En el caso contrario salen el conjunto de caracteres que representa el numero.
+
+PREGUNTA 59.Escribe los valores que ha mostrado el script showCpuTime.sh para cada uno
+de los procesos y comenta las diferencias entre ellos en cuanto al consumo de cpu. ¿A qué se
+deben? Identifica las líneas de código de marcan la diferencia entre ellos
+
+    Lo que nos muestra es que el tiempo consumido de CPU de es1 es cero porque no ha recibido ningun valor en read y se queda en estado bloqueado (no consume CPU). Mientras que el es5 si proque está en un bucle, que consume CPU.
+
+PREGUNTA 60.Anota en el fichero entrega.txt el resultado de ambas ejecuciones. Entrega el código programado en el fichero es6_v2.c
+1a ejec:
+    Read correcto
+2a ejec:
+    Signal SIGINT recibido
+    Read interrumpido por signal
+
+PREGUNTA 61.¿Qué pasaría si usáramos el flag SA_RESTART en el sigaction? Repite las ejecuciones anteriores activando el flag SA_RESTART y anota el resultado en el fichero entrega.txt.
+1a ejec:
+    Read correcto
+2a ejec:
+    Signal SIGINT recibido
+    (se queda bloqueado esperando a leer a entrada, en el read)
+
+PREGUNTA 62.¿Estaba ya en uso el major especificado en el código? En caso afirmativo, ¿qué driver lo estaba utilizando?
+    Sí que estaba en uso, por el major 249 pps y el major 250.
+
+PREGUNTA 63.Apunta la línea de la salida de lsmod correspondiente a myDriver1 y myDriver2.
+    Module                  Size  Used by
+    myDriver2               1091  0 
+    myDriver1               1091  0 
+
+PREGUNTA 64.Apunta la línea de comandos que has utilizado para crear el dispositivo.
+    sudo mknod myDevice c 249 0
+
+PREGUNTA 65.Anota en el fichero “entrega.txt” el resultado de la ejecución y explica el resultado obtenido.
+    Driver 1 read operation
+    Sponsored by Laboratorios Gelocatas SL
+    fin ejecución
+La llamada al sistema read vee que intentamos leer del dispositivo y por lo tanto, se ejecuta el read asociado para el dispositivo que está definido en myDriver1.c, que llena el buffer con su salida.
+
+PREGUNTA 66.Anota el resultado de la ejecución. Explica el motivo de las diferencias observadas comparando la salida de este ejercicio con la de la apartado 5.
+    DRIVER 2 READ OPERATION
+    SPONSORED BY LABORATORIOS GELOCATAS SL
+    fin ejecución
+Ahora, le hemos asociado myDriver2, donde su operación de read da esta salida.

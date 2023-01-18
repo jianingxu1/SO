@@ -1,0 +1,1 @@
+18. The -c option. No option was needed if the file is in the same directory.

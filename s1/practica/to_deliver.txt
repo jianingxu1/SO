@@ -1,0 +1,22 @@
+Jianing Xu, Sessio 1 Laboratori SO
+
+1. mkdir S1 S2 S3 S4 S5
+2. ls. -a.
+3. -l. Se ven los permisos, el tamaño, la fecha que se actualizó por última vez y el nombre del fichero, etc etc.
+4. Primero, cambiar la vista a columnas. Luego, dándole click derecho a la barra de propiedades, y activando el botón a los que nos interesen.
+5. rmdir DIRECTORY_NAME. ls. mkdir DIRECTORY_NAME.
+6. Los dos muestran el contenido de un fichero. cat puede concatenar varios archivos a la vez y printearlos a la consola y less te muestra solo el de un fichero y en otra "ventana", cargando solo una parte del contenido.
+7. Activa el modo interactivo, si ya existe un fichero con el mismo nombre, nos pide si sobreescribirlo o no.
+alias cpi='cp -i'.
+8. Activa el modo interactivo, te pide confirmación antes de eliminar el fichero/directorio.
+También activa el modo interactivo, te pide si quieres sobreescribir cuando hay un fichero con el mismo nombre que le quieres poner al que quieres renombrar/mover. 
+alias rm='rm -i'
+9. chmod ugo=w FILE_NAME. cat: test: Permission denied. chmod ugo=r FILE_NAME. Si, pero te muestra un prompt de que vas a borrar un archivo protegido.
+?10. PATH, HOME muestra la localización del directorio raíz/base y PWD muestra la localización del directorio actual.
+11. /
+12. export NOMBRE_VARIABLE=valor. echo $NOMBRE_VARIABLE
+13. El ls que me acabo de descargar.
+14. Sí que está definido en la variable PATH. Que podemos ejecutar el comando "ls" que nos hemos descargado sin la necesidad de especificar su ruta, ya que anteriormente hemos añadido al PATH el ".", que es la ruta del directorio en el que estamos.
+15. Primero, el ls del sistema. Luego, también el ls del sistema ya que la terminal siempre ejecuta el primer programa "ls" que encuentre en las rutas de la variable PATH, en las cuáles la ruta del "ls" descargado es el último, y el ls del sistema se encuentra mucho antes.
+16. > redirecciona el output a un fichero pero también borra el contenido que había antes. En cambio, >> hace lo mismo pero lo inserta al final del fichero, sin borrarlo.
+
